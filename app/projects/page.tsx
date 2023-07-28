@@ -1,5 +1,6 @@
 import { spaceMono } from "@/app/fonts";
 import ProjectIcons from "./components/project-icons";
+import { Metadata } from "next";
 
 interface Project {
   id: number;
@@ -57,6 +58,11 @@ const projects: Project[] = [
     // blog_path: "test",
   },
 ];
+
+export const metadata: Metadata = {
+  title: "Projects",
+  description: "Some of my personal and freelance web dev projects.",
+};
 
 const ProjectCard: React.FC<ProjectCardProps> = ({ project }) => {
   const {

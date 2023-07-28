@@ -51,7 +51,7 @@ function SeedButton() {
 
   return (
     <button
-      onClick={handleSeed}
+      // onClick={handleSeed}
       className="w-[150px] h-[50px] border border-white rounded-xl"
     >
       Click to Seed Views DB
