@@ -1,0 +1,295 @@
+---
+title: 6 Approaches for Data Fetching in React
+publishedAt: 1.31.2023
+summary: Article discussing different approaches to data fetching in React.js. Originally posted  on [dev.to](https://dev.to/char_carr_dev/6-approaches-for-data-fetching-in-react-1ec3)
+---
+
+_This blog post was originally posted on [dev.to](https://dev.to/char_carr_dev/6-approaches-for-data-fetching-in-react-1ec3). The original post has 70+ reactions and 150+ saves. Post also received Top 7 award and was featured on the weekly 'must-reads' list._
+
+## Outline
+
+- [Intro to Data Fetching in React](#sec-one)
+- [Simple Explanation of JavaScript Promises](#sec-two)
+- [Approach #1: Fetch API w/ Promise Methods](#sec-three)
+- [Approach #2: Axios Library w/ Promise Methods](#sec-four)
+- [Approach #3: Async Functions (async / await)](#sec-five)
+- [Approach #4: Creating ‘useFetch’ Custom React Hook](#sec-six)
+- [Approach #5: React Query Library](#sec-seven)
+- [Approach #6: Redux Toolkit’s RTK Query](#sec-eight)
+- [Some Final Thoughts](#sec-nine)
+
+---
+
+### Link to Follow Along w/ Examples
+
+[GitHub Repository](https://github.com/CharlesCarr/react-data-fetch)
+
+---
+
+## Data Fetching in React <a name="sec-one"></a>
+
+Data fetching is a core aspect of any React application. It is very important for React developers to understand the different data fetching approaches and which is most appropriate for their use case.
+
+This article has a corresponding [public GitHub repository](https://github.com/CharlesCarr/react-data-fetch) that you can reference to better understand. The sample React app fetches data from an external API [(random.dog)](https://random.dog/) and renders a random picture of a dog on the webpage. Its goal is to be very simple to allow for easy comparison between the data fetching approaches.
+
+## But first, let's understand JavaScript Promises <a name="sec-two"></a>
+
+Simply put, a promise is a JavaScript object that will produce a value sometime in the future. This usually applies to asynchronous operations (ex. data fetching).
+
+A promise has three states:
+
+- **Pending**: where the promise is still in the works
+- **Fulfilled**: where the promise resolves successfully and returns a value
+- **Rejected**: where the promise fails with an error
+
+If a promise is fulfilled or rejected it has **settled**. Promises have different methods for doing different things depending on the outcome. These methods will be discussed in greater detail in the next sections.
+
+## **Approach #1** - Fetch API w/ Promise Methods <a name="sec-three"></a>
+
+The Fetch API provides a global `fetch()` method that enables developers a straightforward approach to fetching data. Prior to `fetch()`, the conventional approach was using `XMLHttpRequest()`. (_This approach is not included in this article as `fetch()` has replaced it with a more powerful and flexible feature set._)
+
+The `fetch()` method requires one parameter, the **URL** to request, and returns a promise. The second and optional parameter, **options**, is an array of properties. The return value of `fetch()` can be either JSON or XML (either an array of objects or a single object). Without the **options** parameter, `fetch()` will always make a **GET** request.
+
+This first approach is what you will typically see in simple use cases of data fetching and often the first result when navigating API documentation. As stated before, we are fetching data from an API that returns a random image of a dog and we then render that image on screen. Prior to making the request, we wrap the code inside a `useEffect` hook with an empty dependency array to run the `fetch()` method only when the component initially mounts.
+
+---
+
+### [Full Code for Approach #1](https://github.com/CharlesCarr/react-data-fetch/blob/main/src/components/ExampleOne.jsx)
+
+```JSX
+  useEffect(() => {
+    fetch(URL)
+      // syntax for handling promises
+      .then((res) => {
+        // check to see if response is okay
+        if (res.ok) {
+          // if okay, take JSON and parse to JavaScript object
+          return res.json();
+        }
+        throw res;
+      })
+      //  .json() returns a promise as well
+      .then((data) => {
+        console.log(data);
+        // setting response as the data state
+        setData(data);
+      })
+      // if res is not okay the res is thrown here for error
+      .catch((err) => {
+        console.error(`Error: ${err}`);
+        // setting the error state
+        setError(err);
+      })
+      //  regardless if promise resolves successfully or not we remove loading state
+      .finally(() => {
+        setLoading(false);
+      });
+  }, []);
+```
+
+---
+
+Inside the `useEffect` we call the `fetch()` method and pass in the URL for our API endpoint. In this approach we are using the `.then()`, `.catch()`, `.finally()` methods of a promise object (recall that `fetch()` returns a promise). We use the `.then()` method and pass in a callback function to check if the response is ok. If the response is ok, we take the JSON data that is returned and parse it into a JavaScript object with the `.json()` method. If the response is not ok, we `throw` an error.
+
+Since the `.json()` method also returns a promise we can chain another `.then()` and pass a function that sets the state of the data to then be used elsewhere in the component. In our example, the external API returns an object with a url property (will be used as `src` of our image).
+
+Continuing through the chain, the next section is the `.catch()` that schedules a function to be called when the promise is rejected. This also returns another promise where we can then chain the `.finally()` method that will be called regardless of if the promise is settled (either resolved or rejected). The `.finally()` method allows us to avoid duplicating code in both `.then()` and `.catch()`, making this a good place to remove the loading state in our example.
+
+---
+
+## **Approach #2** - Axios Library w/ Promise Methods <a name="sec-four"></a>
+
+Axios is a popular HTTP client library that can be used for efficient data fetching. It can be easily installed via npm or other package managers into React applications. Using Axios is an alternative to the Fetch API and has some advantages if you do not mind installing an external library.
+
+This second example will be very close to our code for the first example using the same promise methods for handling promise state and responses. Instead of using the `fetch()` method, after importing the Axios library into our component we can use the `axios.get()` method where we can pass in the URL to our external API endpoint. This will return a promise so we can take the same approach with the promise method chaining.
+
+---
+
+### [Full Code for Approach #2](https://github.com/CharlesCarr/react-data-fetch/blob/main/src/components/ExampleTwo.jsx)
+
+```JSX
+useEffect(() => {
+    axios.get(URL)
+      // syntax for handling promises
+      .then((res) => {
+        console.log(res.data);
+        // axios converts json to object for us (shortens our code)
+        setData(res.data);
+      })
+      // axios takes care of error handling for us instead of checking manually
+      .catch((err) => {
+        console.error(`Error: ${err}`);
+        // setting the error state
+        setError(err);
+      })
+      //  regardless if promise resolves successfully or not we remove loading state
+      .finally(() => {
+        setLoading(false);
+      });
+  }, []);
+```
+
+---
+
+The apparent differences between the code for the Fetch API and the code for this Axios approach is that with Axios we only need a single `.then()` as Axios converts the JSON to a JavaScript object for us (shortening our code). Additionally, we are no longer writing a conditional to throw errors manually because Axios throws 400 and 500 range errors for you (again shortening our code).
+
+---
+
+## **Approach #3** - Async Functions (async / await)
+
+{" "}
+<a name="sec-five"></a>
+
+In this example we will be moving away from the promise chaining we have used in the previous two examples and instead introduce a more modern approach for writing asynchronous, promise-based code. This approach can be used with whatever fetching mechanism you choose but for this example we will be sticking with the Axios library.
+
+This third example sets up the component in a similar way to the last example with importing the Axios library and then wrapping the code for fetching the data inside of a `useEffect` with an empty dependency array. Within the `useEffect`, we create an asynchronous function using the `async` keyword and then within the function have three separate sections - `try`, `catch`, and `finally`. This try/catch approach is used to handle errors in JavaScript. The code inside of the `try` block is executed first and if there are any errors thrown they will be ‘caught’ in the `catch` block and the code inside will be executed. Lastly, the `finally` block will always be executed after the flow passes through the try/catch.
+
+---
+
+### [Full Code for Approach #3](https://github.com/CharlesCarr/react-data-fetch/blob/main/src/components/ExampleThree.jsx)
+
+```JSX
+useEffect(() => {
+    // create async function b/c cannot use async in useEffect arg cb
+    const fetchData = async () => {
+    //   with async/await use the try catch block syntax for handling
+      try {
+        // using await to make async code look sync and shorten
+        const res = await axios.get(URL);
+        setData(res.data);
+      } catch (err) {
+        console.error(`Error: ${err}`);
+        // setting the error state
+        setError(err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, []);
+```
+
+---
+
+In this example, the `try` block creates a variable called `res` (short for response) that uses the `async` keyword. This allows the code to look synchronous (shorter and easier on the eyes). In this example the `axios.get(URL)` is being ‘awaited’ until it settles. If the promise is fulfilled, then we set the data into the state. If the promise is rejected (errors thrown), it moves into the `catch` block.
+
+---
+
+## **Approach #4** - Creating ‘useFetch’ Custom React Hook
+
+{" "}
+<a name="sec-six"></a>
+
+The fourth approach is creating our own custom React hook called `useFetch` that will be able to be reusable across our app in different components and cut out the bulky fetching code from each component. This example is really just taking the fourth example (same technique of using the Axios library with async/await) and moving that code into its own custom hook.
+
+To do this, we create a new file called `useFetch.js`. We then take all of the code within the `useEffect` from the last example as well as the different states we are tracking add it inside of the `useFetch` function. Finally this function will return an object with each of those states to then be accessed where the `useFetch` hook is called. Our `useFetch` hook will also accept one parameter, the **URL**, to allow for more reusability with the potential to make fetch requests to different endpoints.
+
+---
+
+### [Full Code for Approach #4](https://github.com/CharlesCarr/react-data-fetch/blob/main/src/hooks/useFetch.js)
+
+```JSX
+const useFetch = (url) => {
+  const [data, setData] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    // create async function b/c cannot use asyc in useEffect arg cb
+    const fetchData = async () => {
+      //   with async/await use the try catch block syntax for handling
+      try {
+        // using await to make async code look sync and shorten
+        const res = await axios.get(url);
+        setData(res.data);
+      } catch (err) {
+        console.error(`Error: ${err}`);
+        // setting the error state
+        setError(err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  return {
+    data,
+    loading,
+    error,
+  };
+};
+```
+
+---
+
+Finally, we import this new custom hook into the components where it will be used and then call it as we would any other React hook. As you can see this greatly helps with code readability and shortening our component.
+
+One final note with this approach is that there are also external libraries that you can install rather than creating your own custom hook. One popular library is `react-fetch-hook` with a very similar functionality to the hook we just built.
+
+---
+
+## **Approach #5** - React Query Library
+
+{" "}
+<a name="sec-seven"></a>
+
+One of the most modern and robust approaches for data fetching in React is using the React Query library. It has many features in addition to just simple data fetching but for this example we will learn just how to simply fetch data from the same example external API. (_If you are interested in learning more check it out [here](https://react-query-v3.tanstack.com/)_)
+
+After installing and importing, React Query provides many custom hooks that can be reused across our components in a very concise way. In this example, we `import` `QueryClient` and `QueryClientProvider` from `react-query` and then wrap our application with the provider and pass the `queryClient` instance as the `client` property to the wrapper. This enables us to use the library across our app.
+
+To make this simple GET request we import and use the `useQuery` hook. Unlike the previous example with our custom hook, we pass in two parameters. The first required parameter is the **queryKey** that is used as a key for reference for this specific query. The second required parameter is the **queryFn** that is the function that the query will use to request data. Rather than just passing in a simple URL like our previous custom hook example we will use this query function and then use the Fetch API and promise method syntax to make the initial fetch. (_This hook has many other optional parameters._)
+
+---
+
+### [Full Code for Approach #5](https://github.com/CharlesCarr/react-data-fetch/blob/main/src/components/ExampleFive.jsx)
+
+```JSX
+const { isLoading, error, data } = useQuery("dogData", () => fetch(URL).then((res) => res.json()));
+```
+
+---
+
+From here, React Query will do all of the additional work behind the scenes and in this example we can destructure `isLoading`, `error`, and `data` from this hook call to be used in our application although there are many other values we are able to access as well.
+
+The power and advantages of using React Query are evident in examples that are larger than our current Dog Image API example. A few additional features to mention include: caching, updating ‘out of date’ data in the background, and other performance related benefits.
+
+---
+
+## **Approach #6** - Redux Toolkit’s RTK Query <a name="sec-eight"></a>
+
+The final approach of this article is data fetching with Redux Toolkit’s RTK Query. It is very common for apps to be using Redux for state management. If your company or your current side project is currently using Redux, a good option is to use RTK Query for data fetching as it provides similar simplicity and benefits as React Query does.
+
+To start using RTK Query wherever you are storing your Redux code, create a `rtkQueryService.js` file that will be the setup for data fetching. After creating you then add the service to your Redux store and assuming you are already using Redux you will already have a `<Provider>` component with the store that is wrapped around your application.
+
+From here, it is very similar to using the custom hook and React Query approach where you import and then use the query hook and destructure `data`, `error`, and `isLoading` to then be able to use in your component.
+
+---
+
+### [Full Code for Approach #6](https://github.com/CharlesCarr/react-data-fetch/blob/main/src/components/ExampleSix.jsx)
+
+```JSX
+ const { data, error, isLoading } = useGetDogQuery();
+```
+
+---
+
+As you can see there is a lot of setup for Redux so this might not be the best approach for our use case but RTK Query can be valuable if you are already using Redux within your React app and want a simple and modern approach for data fetching that also provides benefits like caching.
+
+---
+
+## Some Final Thoughts <a name="sec-nine"></a>
+
+Props to you if you got to this point! The goal of this article was to introduce some different approaches of data fetching for those learning React. This serves as a centralized place to compare with the same use case to better understand. It was not my goal to make statements on the ‘best’ approach or dive into granular detail.
+
+Additionally, there are other current approaches to data fetching not mentioned here and I am sure others will come about as the React ecosystem evolves. That said, I believe this article provides a strong foundation for understanding this space. I hope you found this useful!
+
+---
+
+(_As this was my first post on dev.to I am curious to hear your feedback in the comments! What is your preferred way to fetch data in your React apps?_)
+
+---
+
+[charliecarr.dev](https://www.charliecarr.dev/)
