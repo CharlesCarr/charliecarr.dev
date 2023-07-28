@@ -5,3 +5,5 @@ My software development portfolio website displaying career info, technical blog
 [charliecarr.dev](https://www.charliecarr.dev)
 
 Contact Me via email @ [charliecarr4@gmail.com](mailto:charliecarr4@gmail.com)
+
+.
