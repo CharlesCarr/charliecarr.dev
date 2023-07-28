@@ -126,11 +126,11 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project }) => {
 
 export default function Projects() {
   return (
-    <section className="w-full h-full flex flex-col mb-20 sm:mb-0">
+    <section className="w-full h-full flex flex-col mb-20">
       <h1 className="text-3xl sm:text-5xl tracking-wider mb-6">PROJECTS.</h1>
 
       {/* Using grid (cols-2) for future use of various card widths */}
-      <div className="grid grid-cols-2 gap-10 h-fit sm:h-[460px] w-full">
+      <div className="grid grid-cols-2 gap-10 h-full w-full">
         {projects.map((project: Project) => (
           <ProjectCard key={project.id} project={project} />
         ))}
