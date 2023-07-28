@@ -78,7 +78,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project }) => {
   } = project;
 
   return (
-    <div className="col-span-2 rounded-2xl border border-white p-8">
+    <div className="flex flex-col rounded-2xl border border-white p-8 max-h-[325px]">
       <div className="flex flex-col gap-1">
         <div
           className={`hidden sm:flex flex-wrap w-full justify-center gap-x-4 sm:gap-x-0 sm:justify-between text-xs ${spaceMono.className}`}
@@ -130,7 +130,7 @@ export default function Projects() {
       <h1 className="text-3xl sm:text-5xl tracking-wider mb-6">PROJECTS.</h1>
 
       {/* Using grid (cols-2) for future use of various card widths */}
-      <div className="grid grid-cols-2 gap-10 h-full w-full">
+      <div className="flex flex-col gap-10 h-full w-full">
         {projects.map((project: Project) => (
           <ProjectCard key={project.id} project={project} />
         ))}
