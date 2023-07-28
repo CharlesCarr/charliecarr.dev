@@ -37,7 +37,7 @@ const projects: Project[] = [
       "Generates csv / PDF assets for users",
       "Automates lead creation for AAA travel agents",
     ],
-    live_url: "https://familytravelpassport.com/", // replace later?
+    // live_url: "https://familytravelpassport.com/", // replace later?
     // github_url: "test",
     // blog_path: "test",
   },
