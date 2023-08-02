@@ -24,7 +24,7 @@ export default function RootLayout({
       className={`${libreFranklin.className} background text-white box-border h-screen w-screen max-h-screen max-w-screen`}
     >
       <body className="antialiased w-screen h-full sm:h-screen max-h-screen max-w-screen flex flex-col items-center">
-        <main className="flex-auto min-w-0 mt-6 flex flex-col w-full sm:w-[525px] relative px-6 sm:px-0">
+        <main className="flex-auto min-w-0 mt-6 flex flex-col w-full sm:w-[600px] relative px-6 sm:px-0">
           <Navbar />
           {children}
           {/* <Analytics /> */}

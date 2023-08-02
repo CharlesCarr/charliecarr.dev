@@ -2,22 +2,26 @@
 
 import { FaGithub, FaLinkedin, FaTwitter, FaFilePdf } from "react-icons/fa";
 
-const socialLinks = [
+export const socialLinks = [
   {
     component: <FaFilePdf className="w-6 h-6" />,
     url: "/charlie_carr_resume_2023.pdf",
+    name: "Resume",
   },
   {
     component: <FaGithub className="w-6 h-6" />,
     url: "https://github.com/CharlesCarr",
+    name: "GitHub",
   },
   {
     component: <FaLinkedin className="w-6 h-6" />,
     url: "https://www.linkedin.com/in/charliecarr4/",
+    name: "LinkedIn",
   },
   {
     component: <FaTwitter className="w-6 h-6" />,
     url: "https://twitter.com/charcarr04",
+    name: "Twitter",
   },
 ];
 
