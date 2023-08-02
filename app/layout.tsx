@@ -3,7 +3,7 @@ import { libreFranklin } from "./fonts";
 import Navbar from "@/components/nav-bar";
 import BottomPanel from "@/components/bottom-panel";
 import { Metadata } from "next";
-// import { Analytics } from '@vercel/analytics/react';
+import { Analytics } from "@vercel/analytics/react";
 
 export const metadata: Metadata = {
   title: {
@@ -27,7 +27,7 @@ export default function RootLayout({
         <main className="flex-auto min-w-0 mt-6 flex flex-col w-full sm:w-[600px] relative px-6 sm:px-0">
           <Navbar />
           {children}
-          {/* <Analytics /> */}
+          <Analytics />
           <BottomPanel />
         </main>
       </body>
