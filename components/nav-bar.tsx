@@ -6,7 +6,9 @@ import logo from "../public/images/logo.png";
 
 const Navbar = () => {
   return (
-    <nav className={`${spaceMono.className} flex items-center gap-10 mb-12`}>
+    <nav
+      className={`${spaceMono.className} flex items-center justify-center sm:justify-start gap-10 mb-12`}
+    >
       <Image
         alt="logo"
         src={logo}
@@ -14,7 +16,7 @@ const Navbar = () => {
         height={40}
         placeholder="blur"
         priority
-        className="shadow-md"
+        className="hidden sm:block shadow-md"
       />
       <Link href="/">home</Link>
       <Link href="/blog">blog</Link>

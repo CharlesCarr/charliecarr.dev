@@ -33,7 +33,7 @@ const DropDownButton = (props: Props) => {
 
   return (
     <div className="ml-auto relative">
-      <button onClick={handleButtonClick}>
+      <button onClick={handleButtonClick} className="flex items-center mt-1 sm:mt-0">
         <RiMenu3Fill className="w-4 h-4" />
       </button>
 
