@@ -5,7 +5,7 @@ import { FaGithub, FaLinkedin, FaTwitter, FaFilePdf } from "react-icons/fa";
 export const socialLinks = [
   {
     component: <FaFilePdf className="w-6 h-6" />,
-    url: "/charlie_carr_resume_2023.pdf",
+    url: "/charlie_carr_resume_aug_2023.pdf",
     name: "Resume",
   },
   {
