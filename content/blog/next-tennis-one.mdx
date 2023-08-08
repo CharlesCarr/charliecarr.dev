@@ -1,0 +1,347 @@
+---
+title: Next 13 Overview & Building in Public
+date: "2023-08-05"
+description: First article in full stack Next.js series. Building a tennis stats app in public with Next.js 13 latest features and other technologies.
+category: Full Stack Next 13 Series
+published: false
+---
+
+_This blog post is the first in the series that follows along with my github repo ([link](https://github.com/CharlesCarr/grand-slams-dashboard)) and the live app is hosted on Vercel ([link](https://grand-slams-dashboard.vercel.app/))._
+
+---
+
+## Outline
+
+- [Intro to Next.js 13 (13.4)](#sec-one)
+- [React vs. Next.js](#sec-two)
+- [Quick Highlights on Next 13](#sec-three)
+- [Building & Learning in Public](#sec-four)
+- [Feature Spotlight: Server Components](#sec-five)
+- [Feature Spotlight: App Router](#sec-six)
+- [Feature Spotlight: Data Fetching](#sec-seven)
+- [Some Final Thoughts](#sec-eight)
+
+---
+
+### Links to Code and Live App
+
+- [GitHub Repository](https://github.com/CharlesCarr/grand-slams-dashboard)
+- [Live Application](https://grand-slams-dashboard.vercel.app/)
+
+---
+
+## Intro to Next.js 13 (13.4) <a name="sec-one"></a>
+
+Next.js is a React framework for building full-stack web applications. Since its inception in 2016 by the team at Vercel, it has rapidly ascended the ladder of popularity in the world of web development.
+
+Some of its key features include built in file-system routing, client and server side rendering, api routes, and automatic code splitting.
+
+React developers opt for Next as it presents **key benefits** such as:
+
+- **Performance optimizations and improved initial loading times** - code splitting, incremental static regeneration, image optimizations
+- **Additional SEO support** - improved scoring
+- **Stronger dev experience** - not needing to add routing libs, no longer need to set up a separate backend server - as now both front end and back end live in Next
+
+Next.js has been widely adopted by major corporations such as Netflix, TikTok, and Uber leveraging its capabilities to drive their web experiences.
+
+In late 2022, Vercel released Next 13 bringing on major changes to support the new React 18 paradigm (client / server components) and most notably the introduction to the app router that was recently declared stable by the team this May.
+
+This article (and those to follow in this series) will unpack these newer Next.js 13 features and other supplemental technologies through the lens of building a professional tennis web application.
+
+---
+
+## But first.. React vs. Next.js <a name="sec-two"></a>
+
+A quick table here to share for those who are looking to clearly compare React and Next.js as a quicker refresher before diving deeper.
+
+| x                     | React                                                  | Next.js                                                                                                     |
+| --------------------- | ------------------------------------------------------ | ----------------------------------------------------------------------------------------------------------- |
+| Definition            | A JavaScript library for building user interfaces      | Full stack React framework for the web                                                                      |
+| Rendering             | Client Side rendering - larger bundle sizing on client | Sever Side Rendering / Static Site Generation make for very performant web apps - less JavaScript on client |
+| Routing               | No built in routing - must rely on external libs       | Built in file system based routing                                                                          |
+| Code Splitting        | No code splitting - poorer performance                 | Automatic code splitting                                                                                    |
+| SEO Friendly          | Slightly SEO friendly                                  | Way more SEO friendly                                                                                       |
+| Image Optimization    | Not built in but can use external libs                 | Image optimizations with next/image component                                                               |
+| Education / Community | Faster to pick up with larger community/documentation  | Prior knowledge of React required with smaller community/documentation                                      |
+| Configurability       | Basic adjustments needed for configurations            | Everything can be configured with ease                                                                      |
+| Speed                 | Slower than Next                                       | Faster than vanilla React                                                                                   |
+| TypeScript            | Supported                                              | Supported                                                                                                   |
+
+---
+
+## Quick Highlights on Next 13's New Features <a name="sec-three"></a>
+
+New Features:
+
+- **App Directory / Router** - file based routing and colocation
+- **React Server Components** - async components
+- **Layouts** - new shared UI wrappers
+- **Data Fetching** - w/ caching, revalidation
+- **Streaming** - server sending smaller bits to client
+- **Turbopack** - new much faster build tool (alt to Webpack)
+- **Toolkit Updates** - image, font, link optimizations
+- **OG Image Generation** - open graph imgs for dynamic social cards
+- **Middleware API** - better dev exp and new functionality
+
+In this article I will introduce the major new capabilities of Next 13 and will dive deeper into more in future articles of this series.
+
+---
+
+## Beginning this Blog Series and Building / Learning in Public <a name="sec-four"></a>
+
+After building my latest freelance client’s web application with Next 13’s pages router, I decided to build my next independent application with the newly stable app router. As I follow the #buildinpublic community on Twitter and am a big fan of the Indie Hacking community, I came up with the idea to rather than build this independently for my own benefit to instead share my learnings along the way.
+
+As I started mapping out this application, I came across [shadcn/ui](https://ui.shadcn.com/) re-usable components and his example dashboard. I found an interesting dataset on tennis grandslam finals results and quickly spun up a Supabase Postgres DB with tables to serve the data for my own dashboard to display this data in interesting ways for tennis fans.
+
+<Image
+  src="/images/blog/next-tennis/one/tennis-dashboard-screenshot-article-one.png"
+  width="600"
+  height="365"
+  alt="tennis dashboard app"
+/>
+
+Over the coming days and weeks, I will continue building out this application and will be sharing my learnings and process along the way through these blog posts and tweets (my Twitter handle is [@charcarr04](https://twitter.com/charcarr04)). I will see how far I can take this leading up to this year’s US Open and hopefully refine some skills along the way and share with the dev community.
+
+---
+
+## **Feature Spotlight** - Server Components <a name="sec-five"></a>
+
+Before diving into Next 13.4, it is important to understand the new mental model of React 18’s client and server components. As discussed in the table above, the previous model of React (without added frameworks) was that everything was rendered on the client in SPAs. The creation of server components has created a hybrid approach where there are components that are rendered completely on the server and those that can be rendered on the client.
+
+This new approach combines the rich interactivity of client-side apps with the improved performance of traditional server rendering.
+
+The way I think about this is that everything is a server component unless it needs to be on the client (client interactivity (buttons/inputs), browser APIs, state / lifecycle methods - hooks, etc). This new paradigm reminds me of my earlier days learning to code with PHP. Now things like data fetching (discussed in more detail below) and other pieces of code that would traditionally bulk up the bundle size are moved to the server. This has positive results of more performant web applications including faster initial page load speeds.
+
+```tsx:dash-header.tsx
+import TourSelect from "./tourSelect";
+import { ModeToggle } from "@/components/mode-toggle";
+
+const DashHeader = () => {
+  return (
+    <header className="flex flex-col-reverse sm:flex-row w-full justify-between items-center">
+      <h1 className="text-4xl sm:text-4xl font-bold tracking-tight  mt-4 sm:mt-0">
+        Grand Slam Titles
+      </h1>
+      <div className="flex items-center gap-3">
+        <TourSelect />
+        <ModeToggle />
+      </div>
+    </header>
+  );
+};
+
+export default DashHeader;
+```
+
+DashHeader is a server component as all components inside of /app are server by default. This component renders only static content from the server but has two client components inside of it.
+
+```tsx:tour-select.tsx {1} showLineNumbers
+"use client";
+
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { atom, useAtom } from "jotai";
+
+export const tourAtom = atom("mens");
+
+const TourSelect = () => {
+  const [tour, setTour] = useAtom(tourAtom);
+
+  return (
+    <Select value={tour} onValueChange={setTour}>
+      <SelectTrigger className="w-[130px] text-xs">
+        <SelectValue />
+      </SelectTrigger>
+      <SelectContent>
+        <SelectItem value="mens" className="text-xs">
+          Mens (ATP)
+        </SelectItem>
+        <SelectItem value="womens" className="text-xs">
+          Womens (WTA)
+        </SelectItem>
+      </SelectContent>
+    </Select>
+  );
+};
+
+export default TourSelect;
+```
+
+Components can then be turned into "client components" by adding the ‘use client’ directive at top of the component. TourSelect uses client side state and has user interactivity for selecting the mens or womens tour to then display the appropriate tour data. These traits require it to be a client component.
+
+---
+
+## **Feature Spotlight** - App Router <a name="sec-six"></a>
+
+One of Next.js 13's most significant updates is the App Router, designed to be the long-term path for Next.js development. While the pages router isn't going anywhere (the Vercel team will still continue to support and add new features), they're nudging new projects towards embracing the App Router as it is the long term vision.
+
+**Understanding the App Router:**
+
+**1.** **File-system based routing:**
+
+Just as with the pages router, each folder represents a route segment, directly correlating to a corresponding segment in the URL path. This extends even to nested routes within folders.
+
+<Image
+  src="/images/blog/next-tennis/one/tennis-app-dir.png"
+  width="508"
+  height="661"
+  alt="app router folder structure"
+/>
+
+In my app router folder structure, I have the routes (admin, dashboard, player). I then colocate my files (components and hooks) for the specific routes and have more general components (ui, etc) that live outside of my app router. This is not the definitive way to set up the Next.js folder structure but just one way that has worked well for this tennis app.
+
+**2. File conventions:**
+
+As stated before, all files within the app router are by default server components. The most important file for each folder is the **`page.tsx`**. This creates the UI for a given route and also make those routes publicly accessible.
+
+The second most important file is **`layout.tsx`** which is a UI component that is shared between multiple pages that serves as a wrapper for your page and other components. Layouts accept a children prop that will be populated with a child page for rendering.
+
+Other files that are important to know include: loading, not-found, and error (may go into more detail on these in future blog articles).
+
+**3. Colocation:**
+
+This concept is foundational to the App Router (and probably my favorite aspect). It allows developers to house relevant files – be it components, styles, tests, or more – within these route folders. This was not possible in the pages directory as any file in pages is considered a route. Now, only the 'page' files are publicly accessible, ensuring a neat and organized structure.
+
+(\*Note: Colocating your project files is not manditory and these files can live outside of /app if preferred)
+
+**Navigating the Routes:**
+
+Navigating within the App Router can be achieved in two distinct ways:
+
+- **Link component:** Acting as an extension to the traditional HTML **`<a>`** tag, this is the go-to method to navigate in Next.
+- **useRouter hook:** This hook (now imported from **`next/navigation`**) is useful for when programmatic route changes are necessary.
+
+**Performance – The Hybrid Approach:**
+
+The App Router marries the efficiency of server-side code splitting per route segment with the finesse of client-side route segment prefetching and caching. When a user ventures to a new route, there's no page reload - only the altered route segments get a makeover, offering a seamless and performant navigation experience.
+
+- **Prefetching:** This mechanism preloads routes in the background before they're actively visited. The Link component will auto-prefetch when they become visible in the user's viewport. And if you've got the itch to prefetch manually, **`router.prefetch()`** is at your service.
+- **Caching:** Say hello to Next's in-memory client-side cache, termed the Router Cache. As users navigate, the React Server Component Payload of prefetched and previously visited route segments are stored in this cache. This cache is used as much as possible - minimizing redundant server requests and data transfer, enhancing performance.
+
+**Dynamic Routes:**
+
+Dynamic routes take a bit of a different approach with Next 13’s app router. For scenarios where exact segment names come from dynamic data, you can enclose a folder's name in square brackets, for instance, **`[id]`** or **`[slug]`**.
+
+These Dynamic Segments and the **`generateStaticParams`** function used together statically generate routes at build time instead of on-demand at request time. This new function’s smart retrieval of data benefits applications with automatic memoization. This means a `fetch` request with the same arguments across multiple `generateStaticParams`, Layouts, and Pages will only be made once, which decreases build times.
+
+```tsx:app/player/mens/[id]/page.tsx {9-26, 28-29} showLineNumbers
+import supabase from "@/utils/supabase";
+import { notFound } from "next/navigation";
+import { DataTable } from "../../components/data-table";
+import { columns } from "../../components/columns";
+import { getSlamInfo } from "@/app/dashboard/utils";
+import BackButton from "../../components/back-btn";
+import ProfileInfo from "../../components/profile-info";
+
+export async function generateStaticParams(): Promise<any[]> {
+  const { data: players, error } = await supabase
+    .from("atp_players")
+    .select("id");
+
+  if (error) {
+    console.error(error);
+  }
+
+  // Return empty array if no players
+  if (!players) {
+    return [];
+  }
+
+  return players.map(({ id }) => ({
+    id,
+  }));
+}
+
+export default async function Page({ params }: { params: { id: string } }) {
+  const { id } = params;
+
+  const { data: playerData } = await supabase
+    .from("atp_players")
+    .select()
+    .eq("id", id)
+    .single();
+
+  const { data: playerResults } = await supabase
+    .from("grand_slam_mens")
+    .select()
+    .or(`champion_id.eq.${id},runner_up_id.eq.${id}`)
+    .order("year", { ascending: true })
+    .order("major_number", { ascending: true });
+
+  if (!playerData || !playerResults) {
+    notFound();
+  }
+
+  const playerResultsWithMajorName = playerResults.map((result: any) => {
+    const transformedMajor = getSlamInfo(result.major_number);
+    result.major_number = transformedMajor.tournament;
+    const seed_champ =
+      result.seed_champion > 0 ? `(${result.seed_champion})` : null;
+    const seed_runner_up =
+      result.seed_runner_up > 0 ? `(${result.seed_runner_up})` : "";
+    result.champion = `${result.champion} ` + seed_champ;
+    result.runner_up = `${result.runner_up} ` + seed_runner_up;
+    return result;
+  });
+
+  return (
+    <div className="container mx-auto py-10">
+      <BackButton />
+      <h1 className="text-2xl sm:text-4xl font-bold tracking-tight mt-4">
+        Grand Slam Titles:
+        <span className="text-muted-foreground ml-4">
+          {playerData.player_name}
+        </span>
+      </h1>
+
+      <ProfileInfo playerData={playerData} playerResults={playerResults} />
+      <DataTable columns={columns} data={playerResultsWithMajorName} />
+    </div>
+  );
+}
+```
+
+This is a server component in my tennis app where I am dynamically generating the mens (ATP) players profile pages. I am using Supabase for my DB so instead of a fetch to my own backend I am querying the 'id' column of my 'atp_players' table. The generateStaticParams function creates all of the paths for each player based on their 'id' and then in my async server component I am retrieving this id from the params to query the player's additional profile data to render on the player profile page.
+
+---
+
+## **Feature Spotlight** - Data Fetching <a name="sec-seven"></a>
+
+Next 13 provides new features for fetching data from the server. It has extended the native fetch Web API with additional caching and revalidation configurations. Each fetch request is memoized while rendering the React component tree.
+
+My previous example with the server component from my dynamic mens players route is a good example of these async / await features in action.
+
+```tsx:page.tsx
+export default async function Page({ params }: { params: { id: string } }) {
+  const { id } = params;
+
+  const { data: playerData } = await supabase
+    .from("atp_players")
+    .select()
+    .eq("id", id)
+    .single();
+```
+Rather than needing to use React lifecycle hooks and handle this on the client, server components simplify the data fetching process. Now you only need to mark the component as async and then await the fetched data directly in the component. This leads to much cleaner code and this would work the same way if I was using the fetch API instead of querying directly from Supabase.
+
+**Caching**
+
+Next.js automatically caches the returned values of the fetch request on the server. Data can then be fetched at build time or request time, cached, and reused on each data request.
+
+**Revalidation**
+
+When you are looking to return the latest data from the server Next provides the ability to customize revalidation. Revalidation will clear the cached data and refetch to ensure that the app is returning the most up to date information to its users. There are two main approaches for this - time-based revalidation (automatically revalidate data after a set time interval) and on-demand validation (manually revalidating data based on event - good for form submissions).
+
+---
+
+## Some Final Thoughts <a name="sec-eight"></a>
+
+The new Next.js 13 features have been a great developer experience for me so far and I am looking forward to building and sharing more in my next article in the series. Stay tuned.
+
+---
+
+[charliecarr.dev](https://www.charliecarr.dev/)

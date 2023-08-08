@@ -1,9 +1,12 @@
-import "./globals.css";
-import { libreFranklin } from "./fonts";
-import Navbar from "@/components/nav-bar";
-import BottomPanel from "@/components/bottom-panel";
-import { Metadata } from "next";
-import { Analytics } from "@vercel/analytics/react";
+import "./globals.css"
+
+import { Metadata } from "next"
+import { Analytics } from "@vercel/analytics/react"
+
+import Footer from "@/components/footer"
+import Header from "@/components/header"
+
+import { libreFranklin } from "./fonts"
 
 export const metadata: Metadata = {
   title: {
@@ -11,26 +14,26 @@ export const metadata: Metadata = {
     template: "%s | Charlie Carr",
   },
   description: "Software Development Portfolio",
-};
+}
 
 export default function RootLayout({
   children,
 }: {
-  children: React.ReactNode;
+  children: React.ReactNode
 }) {
   return (
     <html
       lang="en"
-      className={`${libreFranklin.className} background text-white box-border h-screen w-screen max-h-screen max-w-screen`}
+      className={`${libreFranklin.className} background text-white box-border h-full min-h-screen w-screen max-w-screen`}
     >
-      <body className="antialiased w-screen h-full sm:h-screen max-h-screen max-w-screen flex flex-col items-center">
+      <body className="antialiased w-screen h-full min-h-screen max-w-screen flex flex-col items-center">
         <main className="flex-auto min-w-0 mt-6 flex flex-col w-full sm:w-[600px] relative px-6 sm:px-0">
-          <Navbar />
+          <Header />
           {children}
           <Analytics />
-          <BottomPanel />
+          <Footer />
         </main>
       </body>
     </html>
-  );
+  )
 }

@@ -14,13 +14,16 @@ export type Blog = {
   _raw: Local.RawDocumentData
   type: 'Blog'
   title: string
-  publishedAt: string
-  summary: string
+  description?: string | undefined
+  date: IsoDateTimeString
+  category: string
   image?: string | undefined
+  published: boolean
   /** MDX file body */
   body: MDX
   slug: string
   slugAsParams: string
+  readingTime: json
 }  
 
 /** Nested types */

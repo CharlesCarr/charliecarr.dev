@@ -1,7 +1,9 @@
 ---
 title: 6 Approaches for Data Fetching in React
-publishedAt: 1.31.2023
-summary: Article discussing different approaches to data fetching in React.js. Originally posted  on [dev.to](https://dev.to/char_carr_dev/6-approaches-for-data-fetching-in-react-1ec3)
+date: "2023-01-31"
+description: Article discussing different approaches to data fetching in React.js. Originally posted  on [dev.to](https://dev.to/char_carr_dev/6-approaches-for-data-fetching-in-react-1ec3)
+category: React
+published: true
 ---
 
 _This blog post was originally posted on [dev.to](https://dev.to/char_carr_dev/6-approaches-for-data-fetching-in-react-1ec3). The original post has 70+ reactions and 150+ saves. Post also received Top 7 award and was featured on the weekly 'must-reads' list._
@@ -138,6 +140,7 @@ The apparent differences between the code for the Fetch API and the code for thi
 ## **Approach #3** - Async Functions (async / await)
 
 {" "}
+
 <a name="sec-five"></a>
 
 In this example we will be moving away from the promise chaining we have used in the previous two examples and instead introduce a more modern approach for writing asynchronous, promise-based code. This approach can be used with whatever fetching mechanism you choose but for this example we will be sticking with the Axios library.
@@ -179,6 +182,7 @@ In this example, the `try` block creates a variable called `res` (short for resp
 ## **Approach #4** - Creating ‘useFetch’ Custom React Hook
 
 {" "}
+
 <a name="sec-six"></a>
 
 The fourth approach is creating our own custom React hook called `useFetch` that will be able to be reusable across our app in different components and cut out the bulky fetching code from each component. This example is really just taking the fourth example (same technique of using the Axios library with async/await) and moving that code into its own custom hook.
@@ -234,6 +238,7 @@ One final note with this approach is that there are also external libraries that
 ## **Approach #5** - React Query Library
 
 {" "}
+
 <a name="sec-seven"></a>
 
 One of the most modern and robust approaches for data fetching in React is using the React Query library. It has many features in addition to just simple data fetching but for this example we will learn just how to simply fetch data from the same example external API. (_If you are interested in learning more check it out [here](https://react-query-v3.tanstack.com/)_)

@@ -1,6 +1,6 @@
-"use client";
+"use client"
 
-import { FaGithub, FaLinkedin, FaTwitter, FaFilePdf } from "react-icons/fa";
+import { FaFilePdf, FaGithub, FaLinkedin, FaTwitter } from "react-icons/fa"
 
 export const socialLinks = [
   {
@@ -23,9 +23,9 @@ export const socialLinks = [
     url: "https://twitter.com/charcarr04",
     name: "Twitter",
   },
-];
+]
 
-const BottomPanel = () => {
+const Footer = () => {
   return (
     <div className="w-full absolute inset-x-0 bottom-8 flex gap-12 sm:gap-20 justify-center items-center">
       {socialLinks.map((link: any) => (
@@ -34,7 +34,7 @@ const BottomPanel = () => {
         </button>
       ))}
     </div>
-  );
-};
+  )
+}
 
-export default BottomPanel;
+export default Footer

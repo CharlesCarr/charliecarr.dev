@@ -1,17 +1,17 @@
-import { spaceMono } from "@/app/fonts";
+import { spaceMono } from "@/app/fonts"
 
 interface Experience {
-  id: number;
-  timeSpan: string;
-  title: string;
-  company: string;
-  techStack: string[];
-  description: string;
-  url: string;
+  id: number
+  timeSpan: string
+  title: string
+  company: string
+  techStack: string[]
+  description: string
+  url: string
 }
 
 interface ExperienceProps {
-  experience: Experience;
+  experience: Experience
 }
 
 const experiences: Experience[] = [
@@ -33,10 +33,10 @@ const experiences: Experience[] = [
     description: "Building UI/UX for FinTech labor market data startup",
     url: "https://www.reveliolabs.com/",
   },
-];
+]
 
 const Experience: React.FC<ExperienceProps> = ({ experience }) => {
-  const { timeSpan, title, company, techStack, description, url } = experience;
+  const { timeSpan, title, company, techStack, description, url } = experience
 
   return (
     <div className="flex flex-col gap-1">
@@ -50,7 +50,7 @@ const Experience: React.FC<ExperienceProps> = ({ experience }) => {
       <div
         className={`flex sm:hidden w-full justify-center gap-x-4 sm:gap-x-0 sm:justify-between text-xs flex-wrap items-center sm:items-start ${spaceMono.className}`}
       >
-        {techStack.slice(0,3).map((tech: string) => (
+        {techStack.slice(0, 3).map((tech: string) => (
           <p key={tech}>{tech}</p>
         ))}
       </div>
@@ -62,10 +62,14 @@ const Experience: React.FC<ExperienceProps> = ({ experience }) => {
         </p>
       </div>
       <p className="text-sm sm:text-base text-center sm:text-start">{`@ ${company}`}</p>
-      <p className={`text-sm ${spaceMono.className} mt-2 sm:mt-0 text-center sm:text-start`}>{description}</p>
+      <p
+        className={`text-sm ${spaceMono.className} mt-2 sm:mt-0 text-center sm:text-start`}
+      >
+        {description}
+      </p>
     </div>
-  );
-};
+  )
+}
 
 const ExperienceCard = () => {
   return (
@@ -82,7 +86,7 @@ const ExperienceCard = () => {
         ))}
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default ExperienceCard;
+export default ExperienceCard
