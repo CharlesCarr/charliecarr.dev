@@ -72,7 +72,7 @@ const BlogCardsContainer = () => {
     >
       {allBlogs
         // Comment out filter to see unpublished in DEV
-        .filter((b) => b.published === true)
+        // .filter((b) => b.published === true)
         .sort((a, b) => {
           if (new Date(a.date) > new Date(b.date)) {
             return -1

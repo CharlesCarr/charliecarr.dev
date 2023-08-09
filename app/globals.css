@@ -17,7 +17,7 @@
 /* rehype-code-titles */
 
 .rehype-code-title {
-  @apply px-5 py-3 font-mono text-sm font-bold text-gray-800 bg-gray-200 rounded-t-lg dark:text-gray-200 dark:bg-gray-900;
+  @apply px-5 py-3 font-mono text-sm font-bold text-gray-800 bg-gray-200 rounded-t-lg dark:text-gray-200 dark:bg-black;
 }
 
 .rehype-code-title + pre {

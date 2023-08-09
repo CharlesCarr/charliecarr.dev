@@ -1,27 +1,33 @@
-import { cn } from "@/lib/utils"
+// "use client"
+
+// import { cn } from "@/lib/utils"
+
+import GitHubIcon from "./github-icon"
 
 interface CalloutProps {
   icon?: string
   children?: React.ReactNode
-  type?: "default" | "warning" | "danger"
+  github_url?: string
 }
 
 export function Callout({
   children,
   icon,
-  type = "default",
+  github_url,
   ...props
 }: CalloutProps) {
   return (
     <div
-      className={cn("my-6 flex items-start rounded-md border border-l-4 p-4", {
-        "border-red-900 bg-red-50": type === "danger",
-        "border-yellow-900 bg-yellow-50": type === "warning",
-      })}
+      className="my-6 flex items-start rounded-lg border border-neutral-400 p-4 relative bg-[#171717]"
       {...props}
     >
-      {icon && <span className="mr-4 text-2xl">{icon}</span>}
-      <div>{children}</div>
+      {icon && <span className="text-2xl absolute top-4 left-6">{icon}</span>}
+
+      {github_url && <GitHubIcon github_url={github_url} />}
+
+      <div className="w-full flex justify-center items-center px-12 font-thin tracking-wide">
+        {children}
+      </div>
     </div>
   )
 }

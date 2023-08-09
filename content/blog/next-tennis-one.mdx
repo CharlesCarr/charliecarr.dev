@@ -3,10 +3,10 @@ title: Next 13 Overview & Building in Public
 date: "2023-08-05"
 description: First article in full stack Next.js series. Building a tennis stats app in public with Next.js 13 latest features and other technologies.
 category: Full Stack Next 13 Series
-published: false
+published: true
 ---
 
-_This blog post is the first in the series that follows along with my github repo ([link](https://github.com/CharlesCarr/grand-slams-dashboard)) and the live app is hosted on Vercel ([link](https://grand-slams-dashboard.vercel.app/))._
+_This blog post is the first in the series that follows along with my github repo (<a href="https://github.com/CharlesCarr/grand-slams-dashboard" target="_blank" rel="noopener noreferrer">link</a>) and the live app is hosted on Vercel (<a href="https://grand-slams-dashboard.vercel.app/" target="_blank" rel="noopener noreferrer">link</a>)._
 
 ---
 
@@ -25,8 +25,8 @@ _This blog post is the first in the series that follows along with my github rep
 
 ### Links to Code and Live App
 
-- [GitHub Repository](https://github.com/CharlesCarr/grand-slams-dashboard)
-- [Live Application](https://grand-slams-dashboard.vercel.app/)
+- <a href="https://github.com/CharlesCarr/grand-slams-dashboard" target="_blank" rel="noopener noreferrer">GitHub Repository</a> 
+- <a href="https://grand-slams-dashboard.vercel.app/" target="_blank" rel="noopener noreferrer">Live Application</a>  
 
 ---
 
@@ -44,7 +44,7 @@ React developers opt for Next as it presents **key benefits** such as:
 
 Next.js has been widely adopted by major corporations such as Netflix, TikTok, and Uber leveraging its capabilities to drive their web experiences.
 
-In late 2022, Vercel released Next 13 bringing on major changes to support the new React 18 paradigm (client / server components) and most notably the introduction to the app router that was recently declared stable by the team this May.
+In late 2022, Vercel released Next 13 bringing on major changes to support the new React 18 paradigm (client / server components) and most notably the introduction to the `/app` directory/router that was recently declared stable by the team this May.
 
 This article (and those to follow in this series) will unpack these newer Next.js 13 features and other supplemental technologies through the lens of building a professional tennis web application.
 
@@ -83,7 +83,7 @@ New Features:
 - **OG Image Generation** - open graph imgs for dynamic social cards
 - **Middleware API** - better dev exp and new functionality
 
-In this article I will introduce the major new capabilities of Next 13 and will dive deeper into more in future articles of this series.
+In this article, I will introduce the major new capabilities of Next 13 and will dive deeper into more in future articles of this series.
 
 ---
 
@@ -91,7 +91,7 @@ In this article I will introduce the major new capabilities of Next 13 and will 
 
 After building my latest freelance client’s web application with Next 13’s pages router, I decided to build my next independent application with the newly stable app router. As I follow the #buildinpublic community on Twitter and am a big fan of the Indie Hacking community, I came up with the idea to rather than build this independently for my own benefit to instead share my learnings along the way.
 
-As I started mapping out this application, I came across [shadcn/ui](https://ui.shadcn.com/) re-usable components and his example dashboard. I found an interesting dataset on tennis grandslam finals results and quickly spun up a Supabase Postgres DB with tables to serve the data for my own dashboard to display this data in interesting ways for tennis fans.
+As I started mapping out this application, I came across <a href="https://ui.shadcn.com/" target="_blank" rel="noopener noreferrer">shadcn/ui</a> re-usable components and his example dashboard. I found an interesting dataset on tennis grand slam finals results and quickly spun up a Supabase Postgres DB with tables to serve the data for my own dashboard to display this data in interesting ways for tennis fans.
 
 <Image
   src="/images/blog/next-tennis/one/tennis-dashboard-screenshot-article-one.png"
@@ -100,7 +100,11 @@ As I started mapping out this application, I came across [shadcn/ui](https://ui.
   alt="tennis dashboard app"
 />
 
-Over the coming days and weeks, I will continue building out this application and will be sharing my learnings and process along the way through these blog posts and tweets (my Twitter handle is [@charcarr04](https://twitter.com/charcarr04)). I will see how far I can take this leading up to this year’s US Open and hopefully refine some skills along the way and share with the dev community.
+<Callout icon="&#127934;" github_url="https://github.com/CharlesCarr/grand-slams-dashboard"><p>
+<p>Throughout the rest of this article and those to come in the series when explicitly calling out features in my tennis app I will be using this MDX component to be able to differentiate on core overview and more specific examples.</p>
+
+Over the coming days and weeks, I will continue building out this application and will be sharing my learnings and process along the way through these blog posts and tweets (my Twitter handle is <a href="https://twitter.com/charcarr04" target="_blank" rel="noopener noreferrer">@charcarr04</a>). I will see how far I can take this leading up to this year’s US Open and hopefully refine some skills along the way and share with the dev community.
+</p></Callout>
 
 ---
 
@@ -133,7 +137,13 @@ const DashHeader = () => {
 export default DashHeader;
 ```
 
-DashHeader is a server component as all components inside of /app are server by default. This component renders only static content from the server but has two client components inside of it.
+<Callout icon="&#127934;" github_url="https://github.com/CharlesCarr/grand-slams-dashboard">
+  <p>
+    DashHeader is a server component as all components inside of /app are server
+    by default. This component renders only static content from the server but
+    has two client components inside of it.
+  </p>
+</Callout>
 
 ```tsx:tour-select.tsx {1} showLineNumbers
 "use client";
@@ -172,7 +182,15 @@ const TourSelect = () => {
 export default TourSelect;
 ```
 
-Components can then be turned into "client components" by adding the ‘use client’ directive at top of the component. TourSelect uses client side state and has user interactivity for selecting the mens or womens tour to then display the appropriate tour data. These traits require it to be a client component.
+<Callout icon="&#127934;" github_url="https://github.com/CharlesCarr/grand-slams-dashboard">
+  <p>
+    Components can then be turned into "client components" by adding the ‘use
+    client’ directive at top of the component. TourSelect uses client side state
+    and has user interactivity for selecting the mens or womens tour to then
+    display the appropriate tour data. These traits require it to be a client
+    component.
+  </p>
+</Callout>
 
 ---
 
@@ -193,7 +211,15 @@ Just as with the pages router, each folder represents a route segment, directly 
   alt="app router folder structure"
 />
 
-In my app router folder structure, I have the routes (admin, dashboard, player). I then colocate my files (components and hooks) for the specific routes and have more general components (ui, etc) that live outside of my app router. This is not the definitive way to set up the Next.js folder structure but just one way that has worked well for this tennis app.
+<Callout icon="&#127934;" github_url="https://github.com/CharlesCarr/grand-slams-dashboard">
+  <p>
+    In my app router folder structure, I have the routes (admin, dashboard,
+    player). I then colocate my files (components and hooks) for the specific
+    routes and have more general components (ui, etc) that live outside of my
+    app router. This is not the definitive way to set up the Next.js folder
+    structure but just one way that has worked well for this tennis app.
+  </p>
+</Callout>
 
 **2. File conventions:**
 
@@ -205,9 +231,9 @@ Other files that are important to know include: loading, not-found, and error (m
 
 **3. Colocation:**
 
-This concept is foundational to the App Router (and probably my favorite aspect). It allows developers to house relevant files – be it components, styles, tests, or more – within these route folders. This was not possible in the pages directory as any file in pages is considered a route. Now, only the 'page' files are publicly accessible, ensuring a neat and organized structure.
+This concept is foundational to the App Router (and probably my favorite aspect). It allows developers to house relevant files – be it components, styles, tests, or more – within these route folders. This was not possible in the pages directory as any file in pages is considered a route. Now, only the `page.tsx` files are publicly accessible, ensuring a neat and organized structure.
 
-(\*Note: Colocating your project files is not manditory and these files can live outside of /app if preferred)
+(\*Note: Colocating your project files is not manditory and these files can live outside of `/app` if preferred)
 
 **Navigating the Routes:**
 
@@ -306,7 +332,17 @@ export default async function Page({ params }: { params: { id: string } }) {
 }
 ```
 
-This is a server component in my tennis app where I am dynamically generating the mens (ATP) players profile pages. I am using Supabase for my DB so instead of a fetch to my own backend I am querying the 'id' column of my 'atp_players' table. The generateStaticParams function creates all of the paths for each player based on their 'id' and then in my async server component I am retrieving this id from the params to query the player's additional profile data to render on the player profile page.
+<Callout icon="&#127934;" github_url="https://github.com/CharlesCarr/grand-slams-dashboard">
+  <p>
+    This is a server component in my tennis app where I am dynamically
+    generating the mens (ATP) players profile pages. I am using Supabase for my
+    DB so instead of a fetch to my own backend I am querying the 'id' column of
+    my 'atp_players' table. The generateStaticParams function creates all of the
+    paths for each player based on their 'id' and then in my async server
+    component I am retrieving this id from the params to query the player's
+    additional profile data to render on the player profile page.
+  </p>
+</Callout>
 
 ---
 
@@ -326,6 +362,7 @@ export default async function Page({ params }: { params: { id: string } }) {
     .eq("id", id)
     .single();
 ```
+
 Rather than needing to use React lifecycle hooks and handle this on the client, server components simplify the data fetching process. Now you only need to mark the component as async and then await the fetched data directly in the component. This leads to much cleaner code and this would work the same way if I was using the fetch API instead of querying directly from Supabase.
 
 **Caching**
@@ -340,8 +377,10 @@ When you are looking to return the latest data from the server Next provides the
 
 ## Some Final Thoughts <a name="sec-eight"></a>
 
-The new Next.js 13 features have been a great developer experience for me so far and I am looking forward to building and sharing more in my next article in the series. Stay tuned.
+The new Next.js 13 features have been a great developer experience for me so far and I am looking forward to building and sharing more in my next article in the series. 
+
+Stay tuned.
+
+Charlie
 
 ---
-
-[charliecarr.dev](https://www.charliecarr.dev/)
